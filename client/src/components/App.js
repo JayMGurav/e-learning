@@ -3,8 +3,9 @@ import Theme, { ThemeContext } from '../context/themeContext.js';
 import Resize from '../context/screenResizeContext.js';
 import { Global, css } from '@emotion/core';
 import { Router, navigate } from '@reach/router';
-// import Cookies from 'js-cookie';
 import { UnSignedUsersRoutes, SignedUserRoutes } from '../pages/index.js';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 import Dashboard from '../pages/dashboard.js';
 
 function ThemeApp() {
@@ -23,20 +24,37 @@ const App = () => {
     const { themeColors, brandColors } = useContext(ThemeContext);
     const [signed, setSigned] = useState(false);
 
-    // useEffect(() => {
-    //     let isSubscribed = true;
-    //     let token = localStorage.getItem('token');
-    //     if (token) {
-    //         setSigned(true);
-    //         navigate('/dashboard', { replace: true });
-    //     } else {
-    //         setSigned(false);
-    //         navigate('/', { replace: true });
-    //     }
-    //     return () => {
-    //         isSubscribed = false;
-    //     };
-    // }, []);
+    const client = new ApolloClient({
+        uri: 'http://localhost:4000/api',
+        credentials: 'include',
+        cache: new InMemoryCache(),
+        request: operation => {
+            //get the token and set it to headers of each request
+            let token = localStorage.getItem('token');
+            console.log(token);
+            operation.setContext({
+                headers: {
+                    authorization: token ? `${token}` : ''
+                }
+            });
+        }
+    });
+
+    //check if user is signed in or not and navigate to respective routes
+    useEffect(() => {
+        let isSubscribed = true;
+        let token = localStorage.getItem('token');
+        if (token) {
+            setSigned(true);
+            navigate('/dashboard/profile', { replace: true });
+        } else {
+            setSigned(false);
+            navigate('/', { replace: true });
+        }
+        return () => {
+            isSubscribed = false;
+        };
+    }, [signed]);
 
     return (
         <>
@@ -148,11 +166,12 @@ const App = () => {
                     padding: 0;
                 `}
             >
-                {/* {signed ? <SignedUserRoutes /> : */}
-                <UnSignedUsersRoutes />
-                <SignedUserRoutes />
-                {/* } */}
-                {/* <Dashboard /> */}
+                <ApolloProvider client={client}>
+                    <Router>
+                        <UnSignedUsersRoutes path="/*" />
+                        <Dashboard path="dashboard/*" />
+                    </Router>
+                </ApolloProvider>
             </main>
         </>
     );

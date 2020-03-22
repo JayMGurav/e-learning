@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { css } from '@emotion/core';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { navigate } from '@reach/router';
+import { navigate, Link } from '@reach/router';
 
 import { ThemeContext } from '../context/themeContext.js';
 
@@ -13,9 +13,8 @@ const signInMutation = gql`
 `;
 
 //SignUp page
-function SignIn() {
+function SignIn(props) {
     const [values, setValues] = useState({});
-    const [errors, setErrors] = useState();
     const { themeColors, brandColors } = useContext(ThemeContext);
 
     function onchange(event) {
@@ -31,10 +30,10 @@ function SignIn() {
         let token = data.signIn;
         await localStorage.setItem('token', token);
         if (token) {
-            navigate('/dashboard', { replace: true });
+            navigate('/dashboard/profile', { replace: true });
         }
     }
-    console.log(errors);
+
     return (
         <Mutation mutation={signInMutation}>
             {mutate => (
@@ -87,6 +86,12 @@ function SignIn() {
                         <p>
                             <span>Enter</span> your details below
                         </p>
+                        <br />
+                        {props.location.state.error && (
+                            <p>
+                                <span>{props.location.state.error}</span>
+                            </p>
+                        )}
                         <label htmlFor="email">Email</label>
                         <input
                             type="email"
@@ -106,8 +111,11 @@ function SignIn() {
                         <button onClick={event => LogMeIn(mutate, event)}>
                             Signin
                         </button>
+                        <Link to="/signup">
+                            Not registered yet...? Please register before
+                            signing in <span>&rarr;</span>
+                        </Link>
                     </form>
-                    <h2>{values.username}</h2>
                 </div>
             )}
         </Mutation>

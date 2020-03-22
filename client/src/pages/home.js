@@ -6,17 +6,6 @@ import web_developer from '../assets/web_developer.svg';
 import cloud_computing from '../assets/cloud_computing.svg';
 import mobile_marketing from '../assets/mobile_marketing.svg';
 
-// import data from '../data.js';
-//dynamically load the images
-
-// const getImg = async img => {
-//     const { default: imgSrc } = await import(
-//         /* webpackPrefetch: true */ `../assets/${img}.svg`
-//     );
-//     // console.log(imgSrc);
-//    return imgSrc;
-
-// };
 const hotCourses = [
     {
         imgsrc: web_developer,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router } from '@reach/router';
-import Cookies from 'js-cookie';
 
 import Career from './careerGuidence.js';
 import Courses from './courses.js';
@@ -9,7 +8,6 @@ import SignUp from './signUp.js';
 import SignIn from './signIn.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/footer.js';
-// import Dashboard from './dashboard.js';
 import SubscriptionPage from './subscription.js';
 import Dashboard from './dashboard.js';
 import CourseDetails from './courseDetail.js';
@@ -28,19 +26,15 @@ export function UnSignedUsersRoutes() {
             <Router>
                 <Home exact path="/" />
                 <Courses path="/courses" />
-                <CourseDetails path="/courses/:courseId" />
+                <CourseDetails path="/courses/courses/:courseId" />
                 <Career path="/career" />
                 <SignUp path="/signup" />
                 <SignIn path="/login" />
                 <SubscriptionPage path="/pricing" />
             </Router>
             <Footer />
-            {/* <Router>
-                <Dashboard exact path="/dashboard" />
-            </Router> */}
         </>
     );
-    // }
 }
 
 export function SignedUserRoutes() {
@@ -52,7 +46,3 @@ export function SignedUserRoutes() {
         </>
     );
 }
-
-// <Route exact path="/dashboard">
-//     <Dashboard />
-// </Route>

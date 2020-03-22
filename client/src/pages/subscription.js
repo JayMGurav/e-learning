@@ -7,7 +7,7 @@ const buyCourseMutation = gql`
     mutation BuyCourseMutation(
         $source: String!
         $coursename: String
-        $usermail: String
+        $courseId: ID
     ) {
         buyCourse(
             source: $source
@@ -30,7 +30,7 @@ function SubscriptionPage() {
                             const response = await mutate({
                                 variables: {
                                     source: token.id,
-                                    courseId: '5e75b54b1556491a6c364df6'
+                                    courseId: '5e771068257a142d0401273a'
                                 }
                             });
                             console.log(response);

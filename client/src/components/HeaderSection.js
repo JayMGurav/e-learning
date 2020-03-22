@@ -12,7 +12,6 @@ const HeaderSection = ({ heading, content, buttonContent, img }) => {
         <div
             css={css`
                 margin: 0rem auto;
-                ${'' /* margin-top: 4rem; */}
                 width: 96%;
                 height: 86vh;
                 border-radius: 25px;
@@ -69,14 +68,19 @@ const HeaderSection = ({ heading, content, buttonContent, img }) => {
 const ImgComp = ({ img }) => {
     const [imgSrc, setImgSrc] = useState();
     const getImg = async () => {
-        const { default: imgSrc } = await import(
+        const { default: imgsrc } = await import(
             /* webpackPrefetch: true */ `../assets/${img}.svg`
         );
-        setImgSrc(imgSrc);
+        setImgSrc(imgsrc);
     };
 
     useEffect(() => {
+        let isSubscribed = true;
         getImg();
+
+        return () => {
+            isSubscribed = false;
+        };
     }, []);
 
     return (

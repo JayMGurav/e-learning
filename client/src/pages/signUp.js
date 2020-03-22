@@ -116,6 +116,10 @@ function SignUp() {
                         >
                             Signup
                         </button>
+                        <Link to="/login">
+                            Already registered before...? Please login{' '}
+                            <span>&rarr;</span>
+                        </Link>
                     </form>
                     {/* <h2>{values.username}</h2> */}
                 </div>

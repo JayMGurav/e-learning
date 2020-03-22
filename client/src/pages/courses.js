@@ -57,7 +57,7 @@ function Courses() {
                             >
                                 {data.courses.map(course => (
                                     <Link
-                                        to={`/courses/${course._id}`}
+                                        to={`courses/${course._id}`}
                                         key={course._id}
                                     >
                                         <div
