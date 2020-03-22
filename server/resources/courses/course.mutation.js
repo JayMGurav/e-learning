@@ -2,19 +2,26 @@ module.exports = {
     // igh
     addCourse: async (_, { input }, { models }) => {
         try {
-            // console.log(input);
-            let cost = parseFloat(input.cost);
-            let checkOut = parseFloat(input.checkoutCost);
+            let cost = 0;
+            let checkOutCost = 0;
+            // convert Rs to paisa format
+            if (
+                Number.isInteger(input.cost) &&
+                Number.isInteger(input.checkoutCost)
+            ) {
+                cost = input.cost * 100;
+                checkOutCost = input.checkoutCost * 100;
+            }
 
             let { _doc } = await models.Course.create({
                 ...input,
                 cost: cost,
-                checkoutCost: checkOut
+                checkoutCost: checkOutCost
             });
             return {
                 ..._doc,
-                cost: _doc.cost.toString(),
-                checkoutCost: _doc.checkoutCost.toString()
+                cost: _doc.cost / 100,
+                checkoutCost: _doc.checkoutCost / 100
             };
         } catch (err) {
             console.error('Error occured while adding course : ', err);

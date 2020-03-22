@@ -42,10 +42,12 @@ var userSchema = new mongoose.Schema(
         //     type: mongoose.Schema.Types.ObjectId,
         //     ref: 'course'
         // },
-        coursesBought: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'course'
-        }
+        coursesBought: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'course'
+            }
+        ]
     },
     { timestamps: true }
 );

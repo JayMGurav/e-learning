@@ -82,17 +82,23 @@ var courseSchema = new mongoose.Schema(
             }
         ],
         cost: {
-            type: mongoose.Schema.Types.Decimal128
+            type: Number
             // required: [true, 'Cost is required field']
         },
         checkoutCost: {
-            type: mongoose.Schema.Types.Decimal128
+            type: Number
             // required: [true, 'Cost is required field']
         },
         about: {
             type: String
             // required: [true, 'About section is required ']
         },
+        boughtBy: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'user'
+            }
+        ],
         // instructor: {},
         // syllabus: [SectionDetails],
         approxTimeToComplete: {

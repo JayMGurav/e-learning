@@ -1,4 +1,8 @@
-// var mongoose = require('mongoose');
+var mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
+ObjectId.prototype.valueOf = function() {
+    return this.toString();
+};
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var { AuthenticationError } = require('apollo-server-express');
@@ -91,39 +95,58 @@ module.exports = {
     buyCourse: async (_, { source, courseId }, { models, user }) => {
         //adds course id to the user document
         // add the transaction details to the transaction details document
-        // if (!user) {
-        //     throw new Error('User not authenticated');
-        // }
+        if (!user) {
+            throw new Error('User not authenticated');
+        }
         try {
-            let user = await models.User.findOne({
-                _id: '5e74ef2329ed7243945cea94'
+            let userData = await models.User.findOne({
+                _id: user.id
             });
-            if (!user) {
+            if (!userData) {
                 throw new Error('User not found');
             }
             let course = await models.Course.findOne({ _id: courseId }).exec();
-            console.log(course);
-            console.log(course._doc);
+
+            //Create the customer with the email and may be stripe id
             const customer = await stripe.customers.create({
-                email: 'c@c.com',
+                email: userData.email,
                 source
             });
-
+            //Charge the customer with the amount of the cost of the course
             const charge = await stripe.charges.create({
-                amount: course.checkoutCost.toString().parseInt(),
+                amount: course.checkoutCost,
                 description: `charged of the course : ${course.coursename}`,
                 currency: 'inr',
                 customer: customer.id
             });
-            console.log(charge);
-            if (charge) {
-                console.log(charge);
-                user.stripeID = customer.id;
-                user.coursesBought.push(courseId);
-                user.save();
-            }
 
-            return user;
+            // if charging is successfull update the schemas of both : User and Course and then return updated user
+
+            if (charge) {
+                //upadte bought course in user schema
+                let updatedUser = await models.User.findByIdAndUpdate(
+                    user.id,
+                    {
+                        $set: { stripeID: customer.id },
+                        $addToSet: {
+                            coursesBought: mongoose.Types.ObjectId(courseId)
+                        }
+                    },
+                    { new: true }
+                );
+                //then update bought by in course schema
+                await models.Course.findByIdAndUpdate(
+                    courseId,
+                    {
+                        $addToSet: {
+                            boughtBy: mongoose.Types.ObjectId(user.id)
+                        }
+                    },
+                    { new: true }
+                );
+                //return the updated user
+                return updatedUser;
+            }
         } catch (err) {
             console.error(err);
         }

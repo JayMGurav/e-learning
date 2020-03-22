@@ -1,10 +1,13 @@
 var express = require('express');
-var { ApolloServer, AuthenticationError } = require('apollo-server-express');
+var {
+    ApolloServer,
+    gql,
+    AuthenticationError
+} = require('apollo-server-express');
 require('dotenv').config();
 var jwt = require('jsonwebtoken');
 var helmet = require('helmet');
 var cors = require('cors');
-var cookieParser = require('cookie-parser');
 var depthLimit = require('graphql-depth-limit');
 var { createComplexityLimitRule } = require('graphql-validation-complexity');
 var dbConnect = require('./db.js');
@@ -12,8 +15,6 @@ var typeDefs = require('./resources/index.typeDefs.js');
 var resolvers = require('./resources/index.js');
 var models = require('./resources/index.models.js');
 // var { stripe } = './stripe.js';
-
-// console.log('this is typeDefs', typeDefs);
 
 // get user from token
 function getUser(token) {
@@ -34,12 +35,15 @@ var port = process.env.PORT || 4000;
 
 var app = express(); //create an app
 app.use(helmet()); //set helmet as middleware to set the security headers
+//overides the default cors set during apollo server
 // app.use(cors()); //set cors as middleware
-app.use(cookieParser());
+
 dbConnect.connect(DB_HOST); //connect to database
 
 var gqlServer = new ApolloServer({
-    typeDefs,
+    typeDefs: gql`
+        ${typeDefs}
+    `,
     resolvers,
     validationRules: [depthLimit(5), createComplexityLimitRule(1000)],
     context: ({ req, res }) => {

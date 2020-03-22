@@ -1,5 +1,7 @@
-var userResolver = require('./users/user.resolver.js');
+var UserResolver = require('./users/user.resolver.js');
+var CourseResolver = require('./courses/course.resolver.js');
 
 module.exports = {
-    ...userResolver
+    User: UserResolver,
+    Course: CourseResolver
 };

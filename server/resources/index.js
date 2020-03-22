@@ -6,7 +6,7 @@ var { GraphQLDateTime, GraphQLDate } = require('graphql-iso-date');
 module.exports = {
     Query,
     Mutation,
-    // ...Resolvers
+    ...Resolvers,
     Date: GraphQLDate,
     DateTime: GraphQLDateTime
 };

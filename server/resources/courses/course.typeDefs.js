@@ -10,9 +10,10 @@ var courseTypeDefs = gql`
         coursename: String
         topic: String
         tags: [String]
-        cost: String
-        checkoutCost: String
+        cost: Int
+        checkoutCost: Int
         about: String
+        boughtBy: [User!]
         approxTimeToComplete: Int
         skills: [String]
         createdAt: DateTime
@@ -22,21 +23,10 @@ var courseTypeDefs = gql`
         coursename: String!
         topic: String!
         tags: [String!]!
-        cost: String!
-        checkoutCost: String!
+        cost: Int!
+        checkoutCost: Int!
         about: String!
         approxTimeToComplete: String!
-        skills: [String!]!
-    }
-
-    type Courses {
-        coursename: String!
-        topic: String!
-        tags: [String!]!
-        cost: String!
-        checkoutCost: String!
-        about: String!
-        approxTimeToComplete: Int!
         skills: [String!]!
     }
 
@@ -50,6 +40,17 @@ var courseTypeDefs = gql`
 `;
 
 module.exports = courseTypeDefs;
+
+// type Courses {
+//     coursename: String!
+//     topic: String!
+//     tags: [String!]!
+//     cost: Int!
+//     checkoutCost: Int!
+//     about: String!
+//     approxTimeToComplete: Int!
+//     skills: [String!]!
+
 // addCourseSyllabus(
 //     id: ID!
 //     coursename: String
