@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import { ThemeContext } from '../context/themeContext.js';
@@ -31,9 +31,6 @@ const NavBar = () => {
     return (
         <div
             css={css`
-                ${'' /* position: absolute;
-                top: 0;
-                left: 0; */}
                 padding: 1rem 0;
                 width: 100%;
                 display: flex;
@@ -101,6 +98,7 @@ const NavBar = () => {
                         </svg>
                     </div>
                 </div>
+                {/* ul ke badle mein hamburger menu Aayega */}
                 <ul
                     css={css`
                         display: flex;
@@ -110,17 +108,17 @@ const NavBar = () => {
                         align-items: center;
                     `}
                 >
-                    <NavLink to="/courses" theme={themeColors}>
+                    <NavLink
+                        to="/courses"
+                        onClick={() => navigate('/courses')}
+                        theme={themeColors}
+                    >
                         Courses
                     </NavLink>
-                    <NavLink to="/career" theme={themeColors}>
-                        Career guidence
-                    </NavLink>
-                    <NavLink to="/pricing" theme={themeColors}>
-                        Pricing
-                    </NavLink>
+
                     <NavLink
                         to="/login"
+                        onClick={() => navigate('/login')}
                         theme={themeColors}
                         brand={brandColors}
                     >

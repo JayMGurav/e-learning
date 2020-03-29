@@ -31,6 +31,7 @@ function Courses() {
                 }}
                 content="Choose your course to success -Build skills with courses,grab certificates"
                 img="SitReadingDoodle"
+                path="/signup"
             />
             <h1>
                 <span>Courses</span> offered
@@ -65,7 +66,7 @@ function Courses() {
                                             css={css`
                                                 padding: 1rem 2rem;
                                                 margin: 0.5rem;
-
+                                                display: flex-inline;
                                                 border: none;
                                                 border-radius: 8px;
                                                 box-shadow: 0 0.5rem 0.5rem

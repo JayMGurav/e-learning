@@ -38,6 +38,7 @@ function Home() {
                 }}
                 content="Choose your course to success -Build skills with courses,grab certificates"
                 img="SitReadingDoodle"
+                path="/signup"
             />
             <div
                 css={css`

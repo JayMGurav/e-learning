@@ -24,6 +24,15 @@ const buyCourseMutation = gql`
     }
 `;
 
+const MeQuery = gql`
+    query {
+        me {
+            username
+            email
+        }
+    }
+`;
+
 const coursesDetailQuery = gql`
     query coursesDetailQuery($id: ID, $coursename: String) {
         course(id: $id, coursename: $coursename) {
@@ -76,8 +85,9 @@ function CourseDetails(props) {
                                                 1
                                             )
                                         }}
-                                        buttonContent="Purchase ths course"
+                                        buttonContent="Get Started"
                                         content={data.course.about}
+                                        path="/signup"
                                     />
                                     <h5>
                                         <span>T</span>opic
@@ -128,27 +138,58 @@ function CourseDetails(props) {
                                         </h6>
                                         <h6>{data.course.checkoutCost}Rs</h6>
                                         <br />
-                                        {userToken ? (
-                                            <StripeCheckout
-                                                token={token => checkOut(token)}
-                                                stripeKey="pk_test_Y4CTAMWcBzkL7k1RhmwQe3oR00mfb0n96g"
-                                            >
-                                                <button>Buy this course</button>
-                                            </StripeCheckout>
-                                        ) : (
-                                            <button
-                                                onClick={() =>
-                                                    navigate('/login', {
-                                                        state: {
-                                                            error:
-                                                                'Please Login before purchasing the course '
-                                                        }
-                                                    })
-                                                }
-                                            >
-                                                Buy this course
-                                            </button>
-                                        )}
+                                        <div id="purchaseBtn">
+                                            {userToken ? (
+                                                <Query query={MeQuery}>
+                                                    {({
+                                                        loading,
+                                                        error,
+                                                        data: meData
+                                                    }) => {
+                                                        if (loading)
+                                                            return (
+                                                                <p>Loading</p>
+                                                            );
+                                                        if (error)
+                                                            return `Error!: ${error}`;
+
+                                                        return (
+                                                            <StripeCheckout
+                                                                name={`AIOC - ${data.course.coursename}`}
+                                                                token={token =>
+                                                                    checkOut(
+                                                                        token
+                                                                    )
+                                                                }
+                                                                email={
+                                                                    meData.me
+                                                                        .email
+                                                                }
+                                                                stripeKey="pk_test_Y4CTAMWcBzkL7k1RhmwQe3oR00mfb0n96g"
+                                                            >
+                                                                <button>
+                                                                    Buy this
+                                                                    course
+                                                                </button>
+                                                            </StripeCheckout>
+                                                        );
+                                                    }}
+                                                </Query>
+                                            ) : (
+                                                <button
+                                                    onClick={() =>
+                                                        navigate('/login', {
+                                                            state: {
+                                                                error:
+                                                                    'Please Login before purchasing the course '
+                                                            }
+                                                        })
+                                                    }
+                                                >
+                                                    Buy this course
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </>
                             );

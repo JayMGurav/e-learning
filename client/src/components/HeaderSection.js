@@ -4,7 +4,7 @@ import { ThemeContext } from '../context/themeContext';
 import { ScreenReSizeContext } from '../context/screenResizeContext.js';
 import { Link } from '@reach/router';
 
-const HeaderSection = ({ heading, content, buttonContent, img }) => {
+const HeaderSection = ({ heading, content, buttonContent, img, path }) => {
     const themeColors = useContext(ThemeContext);
     const { dimension } = useContext(ScreenReSizeContext);
 
@@ -55,7 +55,7 @@ const HeaderSection = ({ heading, content, buttonContent, img }) => {
                     >
                         {content}
                     </p>
-                    <Link to="/signup">
+                    <Link to={path}>
                         <button>{buttonContent || 'Get Started'}</button>
                     </Link>
                 </div>

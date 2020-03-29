@@ -1,29 +1,59 @@
-// var { gql } = require('apollo-server-express');
+var { gql } = require('apollo-server-express');
 
-// var instructorTypeDefs = gql`
-//     type SocialHandles {
-//         linkedin: String
-//         twitter: String
-//         facebook: String
-//         instagram: String
-//     }
+var intructorTypeDefs = gql`
+    type Instructor {
+        _id: ID!
+        username: String!
+        email: String!
+        name: String!
+        qualification: String!
+        profession: String
+        bio: String!
+        avatar: String
+        gender: Gender!
+        courses: [Course!]
+        socialHandles: SocialHandles!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+    }
 
-//     type Instructor {
-//         id: ID!
-//         name: String!
-//         email: String!
-//         avatar: String!
-//         gender: Gender!
-//         courses: [Course!]!
-//         skills: [String!]
-//         bio: String!
-//         profession: String!
-//         socialMediaHandles: SocialHandles
-//         createdAt: DateTime!
-//         updatedAt: DateTime!
-//     }
-//     extend type Query{}
-//     extend type Mutation{}
-// `;
+    type SocialHandles {
+        websiteHandle: String
+        facebookHandle: String
+        linkedinHandle: String
+        instagramHandle: String
+        twitterHandle: String
+    }
 
-// module.exports = instructorTypeDefs;
+    input InstructorInputType {
+        username: String
+        email: String
+        qualification: String
+        profession: String
+        bio: String
+        avatar: String
+        courses: [Courses]
+        socialHandles: SocialHandles
+    }
+
+    type Query {
+        intructor(username: String, id: ID): Instructor!
+        me: Instructor!
+    }
+
+    type Mutation {
+        instructorSignUp(
+            username: String!
+            email: String!
+            password: String!
+        ): Boolean!
+
+        instructorSignIn(
+            username: String!
+            email: String
+            password: String!
+        ): String!
+
+        instructorUpdateMe(input: InstructorInputType!): Instructor!
+    }
+`;

@@ -41,14 +41,13 @@ const Theme = ({ children }) => {
     return (
         <ThemeContext.Provider
             value={{
-                mode,
+                // mode,
                 changeMode,
                 themeColors,
                 brandColors
             }}
         >
             {children}
-            {console.log(mode)}
         </ThemeContext.Provider>
     );
 };

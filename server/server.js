@@ -46,12 +46,12 @@ var gqlServer = new ApolloServer({
     `,
     resolvers,
     validationRules: [depthLimit(5), createComplexityLimitRule(1000)],
-    context: ({ req, res }) => {
+    context: ({ req }) => {
         let token = req.headers.authorization;
         let user = getUser(token);
         // add it to the context
-
-        return { models, user, res };
+        //user might be normal user(student) || an instructor
+        return { models, user };
     }
 });
 

@@ -18,8 +18,8 @@ module.exports = {
         let hashedPassword = await bcrypt.hash(password, 10);
         try {
             //check if there already exist a user with the mail
-            let finduser = await models.User.find({ email });
-            if (finduser.length != 0) {
+            let finduser = await models.User.findOne({ email });
+            if (finduser) {
                 throw new AuthenticationError(
                     'Error Signing up the user : User already exist'
                 );
@@ -29,8 +29,8 @@ module.exports = {
                     email,
                     password: hashedPassword
                 });
-                let token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-                if (token) return true;
+
+                if (user) return true;
                 return false;
             }
         } catch (err) {
@@ -121,7 +121,7 @@ module.exports = {
             });
 
             // if charging is successfull update the schemas of both : User and Course and then return updated user
-
+            //Change this line for already bought courses
             if (charge) {
                 //upadte bought course in user schema
                 let updatedUser = await models.User.findByIdAndUpdate(

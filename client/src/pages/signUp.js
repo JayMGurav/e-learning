@@ -3,7 +3,7 @@ import { css } from '@emotion/core';
 import { ThemeContext } from '../context/themeContext.js';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { navigate } from '@reach/router';
+import { navigate, Link } from '@reach/router';
 
 const signUpMutation = gql`
     mutation signUpMutation(
@@ -17,7 +17,6 @@ const signUpMutation = gql`
 
 function SignUp() {
     const [values, setValues] = useState({});
-    const history = useHistory();
     const { themeColors, brandColors } = useContext(ThemeContext);
 
     function onchange(event) {

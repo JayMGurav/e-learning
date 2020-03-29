@@ -1,6 +1,7 @@
 import React from 'react';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
+import { navigate } from '@reach/router';
 
 const MeQuery = gql`
     query {
@@ -25,6 +26,14 @@ function Profile() {
                         </h1>
                         <h6>Email : {data.me.email}</h6>
                         <h6>Username : {data.me.username}</h6>
+                        <button
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                navigate('/');
+                            }}
+                        >
+                            Logout
+                        </button>
                     </>
                 );
             }}

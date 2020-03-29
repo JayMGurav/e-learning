@@ -1,34 +1,58 @@
 var mongoose = require('mongoose');
 
-var SocialHandlesSchema = new mongoose.Schema({
-    linkedin: { type: String },
-    twitter: { type: String },
-    facebook: { type: String },
-    instagram: { type: String }
+var SocialHandles = new mongoose.Schema({
+    websiteHandle: {
+        type: String
+    },
+    facebookHandle: {
+        type: String
+    },
+    linkedinHandle: {
+        type: String
+    },
+    instagramHandle: {
+        type: String
+    },
+    twitterHandle: {
+        type: String
+    }
 });
 
 var instructorSchema = new mongoose.Schema(
     {
-        name: {
+        username: {
             type: String,
-            required: [true, 'Name is the required field ']
+            required: [true, 'Username is a required feild']
         },
         email: {
             type: String,
-            required: [true, 'email is the required field '],
-            unique: true,
+            required: [true, 'Email is the required feild'],
             lowercase: true,
             trim: true
         },
-        gender: {
-            type: String,
-            enum: ['male', 'female', 'others']
-        },
         password: {
             type: String,
-            required: [true, 'Password is the required field ']
+            required: [true, 'password is required feil']
+        },
+        name: {
+            type: String,
+            required: [true, 'Name is required']
+        },
+        qualification: {
+            type: String,
+            required: [true, 'Qualification is a required feild']
+        },
+        profession: {
+            type: String
+        },
+        bio: {
+            type: String,
+            required: [true, 'Bio is required']
         },
         avatar: {
+            type: String
+        },
+        gender: {
             type: String
         },
         courses: [
@@ -37,22 +61,11 @@ var instructorSchema = new mongoose.Schema(
                 ref: 'course'
             }
         ],
-        skills: [
-            {
-                type: String
-            }
-        ],
-        bio: {
-            type: String,
-            required: true
-        },
-        profession: {
-            type: String,
-            required: true
-        },
-        socialMediaHandles: SocialHandlesSchema
+        socialHandles: SocialHandles
     },
     { timestamps: true }
 );
+
 var Instructor = mongoose.model('instructor', instructorSchema);
+
 module.exports = Instructor;

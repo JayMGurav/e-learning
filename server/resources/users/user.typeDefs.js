@@ -1,9 +1,5 @@
 var { gql } = require('apollo-server-express');
 
-// cart: [ID!]
-// wishlist: [Course]
-//Add this to User
-
 var userTypeDefs = gql`
     scalar Date
     scalar DateTime
@@ -23,12 +19,14 @@ var userTypeDefs = gql`
         dateOfBirth: Date
         gender: Gender
         stripeID: String
+        wishList: [Course!]
+        cart: [Course!]
         coursesBought: [Course!]
         createdAt: DateTime!
         updatedAt: DateTime!
     }
 
-    input UpdateInputType {
+    input UserUpdateInputType {
         username: String
         email: String
         name: String
@@ -39,14 +37,16 @@ var userTypeDefs = gql`
 
     type Query {
         user(username: String!): User!
-        users: [User!]!
+        users: [User!]
         me: User!
+        cart: [Course!]
     }
     type Mutation {
         signUp(username: String!, email: String!, password: String!): Boolean!
         signIn(email: String!, password: String!): String!
-        updateMe(input: UpdateInputType!): User!
+        updateMe(input: UserUpdateInputType!): User!
         buyCourse(source: String!, coursename: String, courseId: ID): User
+        addToCart(coursename: String!): Course
     }
 `;
 
